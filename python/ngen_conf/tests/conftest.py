@@ -10,6 +10,7 @@ from ngen.config.soil_freeze_thaw import SoilFreezeThaw
 from ngen.config.soil_moisture_profile import SoilMoistureProfile
 from ngen.config.topmod import Topmod
 from ngen.config.lstm import LSTM
+from ngen.config.lstm_rust import LSTM_Rust
 from ngen.config.multi import MultiBMI
 
 # set the workdir relative to this test config
@@ -118,6 +119,19 @@ def lstm_params():
     return data
 
 @pytest.fixture
+def lstm_rust_params():
+    path = _workdir.joinpath("data/CFE/")
+    data = {
+            'model_type_name': 'bmi_rust',
+            'name': 'bmi_c',
+            'registration_function': 'register_bmi_lstm',
+            'config_prefix':path,
+            'config': "{{id}}_config.txt",
+            'library_prefix':path,
+            'library': 'libfakecfe.so',}
+    return data
+
+@pytest.fixture
 def lgar_params():
     path = _workdir.joinpath("data/dne/")
     data = {
@@ -175,6 +189,10 @@ def noahowp(noahowp_params):
 @pytest.fixture
 def lstm(lstm_params):
     return LSTM(**lstm_params)
+
+@pytest.fixture
+def lstm_rust(lstm_rust_params):
+    return LSTM_Rust(**lstm_rust_params)
 
 @pytest.fixture
 def lgar(lgar_params):
